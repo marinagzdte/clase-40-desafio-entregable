@@ -1,14 +1,17 @@
 import MongoDbProductsDao from './MongoDbProductsDao.js'
 import FirebaseProductsDao from './FirebaseProductsDao.js'
+import yargs from 'yargs/yargs';
+import { hideBin } from 'yargs/helpers'
 
-const option = process.argv[2] || 'Mongo'
+const argv = yargs(hideBin(process.argv)).argv;
+const option = argv.persistence || 'mongo';
 
 let dao
 switch (option) {
-    case 'Mongo':
+    case 'mongo':
         dao = new MongoDbProductsDao()
         break
-    case 'MariaDb':
+    case 'firebase':
         dao = new FirebaseProductsDao()
         break
     default:

@@ -14,17 +14,17 @@ export default class ProductsRepository {
         return products
     }
 
-    async getById(idBuscado) {
-        const dto = await this.#dao.getById(idBuscado)
+    async getById(id) {
+        const dto = await this.#dao.getById(id)
         return new Product(dto)
     }
 
-    async add(productoNuevo) {
-        await this.#dao.save(asDto(productoNuevo))
+    async add(doc) {
+        await this.#dao.save(asDto(doc))
     }
 
-    async removeById(idBuscado) {
-        const removida = await this.#dao.deleteById(idBuscado)
+    async removeById(id) {
+        const removida = await this.#dao.deleteById(id)
         return new Product(removida)
     }
 

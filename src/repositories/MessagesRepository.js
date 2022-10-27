@@ -12,17 +12,17 @@ export default class MessagesRepository {
         return await this.#dao.getAll()
     }
 
-    async getById(idBuscado) {
-        const dto = await this.#dao.getById(idBuscado)
+    async getById(id) {
+        const dto = await this.#dao.getById(id)
         return new Message(dto)
     }
 
-    async add(mensajeNuevo) {
-        await this.#dao.save(mensajeNuevo)
+    async add(doc) {
+        await this.#dao.save(doc)
     }
 
-    async removeById(idBuscado) {
-        const removida = await this.#dao.deleteById(idBuscado)
+    async removeById(id) {
+        const removida = await this.#dao.deleteById(id)
         return new Message(removida)
     }
 

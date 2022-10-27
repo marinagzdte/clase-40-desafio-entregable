@@ -1,13 +1,14 @@
 import passport from 'passport';
 import passportLocal from 'passport-local';
 import bCrypt from 'bcrypt';
-import MongoDbUsersDao from '../daos/users/MongoDbUsersDao.js';
+import UserDaoFactory from '../daos/users/UserDaoFactory.js';
 import logger from '../utils/logger.js';
-const userContainer = new MongoDbUsersDao();
 
 /*-----------------------------------------------*/
 /*                 passport                      */
 /*-----------------------------------------------*/
+
+const userDao = UserDaoFactory.getDao();
 
 const isValidPassword = (user, password) => {
     return bCrypt.compareSync(password, user.password);
@@ -29,7 +30,8 @@ passport.use('login', new passportLocal.Strategy(
     { passReqToCallback: true },
     async (req, username, password, done) => {
         try {
-            const user = await userContainer.getByCondition({ username: username });
+            const users = await userDao.getAll();
+            const user = users.find(u => u.username == username)
 
             if (!isValidPassword(user, password)) {
                 logger.logWarn('Contraseña inválida.');
@@ -52,7 +54,9 @@ passport.use('register', new passportLocal.Strategy({
 },
     async (req, username, password, done) => {
         try {
-            const user = await userContainer.getByCondition({ username: username });
+            const users = await userDao.getAll();
+            const user = users.find(u => u.username == username)
+
             if (user) {
                 logger.logWarn(`El usuario ${username} ya existe.`);
                 return done(null, false);
@@ -63,7 +67,7 @@ passport.use('register', new passportLocal.Strategy({
                 name: req.body.name
             }
 
-            await userContainer.save(newUser);
+            await userDao.save(newUser);
             logger.logInfo(`Nuevo usuario registrado: ${newUser.username}`);
             return done(null, newUser);
 

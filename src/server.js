@@ -5,8 +5,6 @@ import passport from './middlewares/passport.js';
 import { engine } from 'express-handlebars';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { getFiveRandomProducts } from './utils/fakerUtils.js';
-import { normalizeMessages } from './utils/normalizrUtils.js';
 import registerRouter from './routes/registerRouter.js';
 import loginRouter from './routes/loginRouter.js';
 import infoRouter from './routes/infoRouter.js';
@@ -74,11 +72,6 @@ const checkAuth = (req, res, next) => {
 
 app.get('/', checkAuth, (req, res) => {
     res.render('main', { name: req.user.name, username: req.user.username });
-});
-
-app.get('/api/test-productos', logger.logReqInfo, (req, res) => {
-    const randomProducts = getFiveRandomProducts();
-    res.render('test', { randomProducts: randomProducts });
 });
 
 app.all('*', logger.logReqWarn, (req, res) => {

@@ -1,7 +1,7 @@
 import passport from 'passport';
 import passportLocal from 'passport-local';
 import bCrypt from 'bcrypt';
-import MongoDbUsersDao from '../daos/MongoDbUsersDao.js';
+import MongoDbUsersDao from '../daos/users/MongoDbUsersDao.js';
 import logger from '../utils/logger.js';
 const userContainer = new MongoDbUsersDao();
 

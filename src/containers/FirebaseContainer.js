@@ -20,7 +20,7 @@ class FirebaseContainer {
 
     async save(object) {
         try {
-            const result = await this.collection.add(object);
+            const result = await this.collection.add(JSON.parse(JSON.stringify(object)));
             return result.id;
         } catch (error) {
             throw new Error(`No se pudo guardar: ${error}`);
@@ -40,7 +40,7 @@ class FirebaseContainer {
 
     async modifyItemById(objectId, newData) {
         try {
-            await this.collection.doc(objectId).update(newData)
+            await this.collection.doc(objectId).update(JSON.parse(JSON.stringify(newData)))
         } catch (error) {
             throw new Error(`No se pudo actualizar por id ${objectId}: ${error}`);
         }
